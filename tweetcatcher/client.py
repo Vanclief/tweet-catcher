@@ -1,31 +1,20 @@
 import json
 import yaml
 
-from influxdb import InfluxDBClient
-
 from tweepy.streaming import StreamListener
-from tweepy import OAuthHandler
 from tweepy import Stream
 
 
 class Client(object):
 
-    def __init__(self, db_client, topic):
+    def __init__(self, auth, db_client, topic):
 
+        self.auth = auth
         self.db_client = db_client
         self.topic = topic
 
         with open("config.yml", 'r') as config_file:
             config = yaml.load(config_file)
-
-        # Get twitter api configuration
-        consumer_key = config['twitter_api']['consumer_key']
-        consumer_secret = config['twitter_api']['consumer_secret']
-        access_token = config['twitter_api']['access_token']
-        access_token_secret = config['twitter_api']['access_token_secret']
-
-        self.auth = OAuthHandler(consumer_key, consumer_secret)
-        self.auth.set_access_token(access_token, access_token_secret)
 
         # Get query parameters
         self.languages = config['languages']

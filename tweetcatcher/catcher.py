@@ -1,7 +1,8 @@
+from multiprocessing.dummy import Pool as ThreadPool
 import yaml
 from influxdb import InfluxDBClient
-from multiprocessing.dummy import Pool as ThreadPool
 from tweetcatcher.client import Client
+from tweepy import OAuthHandler
 
 
 class Catcher(object):
@@ -27,14 +28,23 @@ class Catcher(object):
 
     def _create_twitter_auth(self, config):
         """ Create a new Auth for Twitter """
+        # Get twitter api configuration
+        consumer_key = config['twitter_api']['consumer_key']
+        consumer_secret = config['twitter_api']['consumer_secret']
+        access_token = config['twitter_api']['access_token']
+        access_token_secret = config['twitter_api']['access_token_secret']
 
-        return None
+        auth = OAuthHandler(consumer_key, consumer_secret)
+        auth.set_access_token(access_token, access_token_secret)
+
+        return auth
 
     def _catch_tweets(self, topic):
-        client = Client(self.db_client, topic)
+        client = Client(self.twitter_auth, self.db_client, topic)
         client.run()
 
     def run(self):
+        """ Create a Pool and start Catching tweets"""
         pool = ThreadPool(len(self.topics))
         pool.map(self._catch_tweets, self.topics)
         pool.close()
@@ -43,32 +53,5 @@ class Catcher(object):
 
 if __name__ == '__main__':
 
-    catcher = Catcher()
-    catcher.run()
-
-#
-    # CONSUMER_KEY = CONFIG['twitter_api']['consumer_key']
-    # CONSUMER_SECRET = CONFIG['twitter_api']['consumer_secret']
-    # ACCESS_TOKEN = CONFIG['twitter_api']['access_token']
-    # ACCESS_TOKEN_SECRET = CONFIG['twitter_api']['access_token_secret']
-
-    # HOST = CONFIG['database']['host']
-    # PORT = CONFIG['database']['port']
-    # USER = CONFIG['database']['user']
-    # PASSWORD = CONFIG['database']['password']
-    # DBNAME = CONFIG['database']['name']
-
-    # DBCLIENT = InfluxDBClient(HOST, PORT, USER, PASSWORD, DBNAME)
-
-    # LISTERNER = StdOutListener()
-    # AUTH = OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-    # AUTH.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
-
-    # TOPICS = (CONFIG['topics']['bitcoin'])
-    # LANGUAGES = (CONFIG['languages'])
-
-    # for topic in CONFIG['topics']:
-        # print(topic)
-
-    # STREAM = Stream(AUTH, LISTERNER)
-    # STREAM.filter(track=TOPICS, languages=LANGUAGES)
+    CATCHER = Catcher()
+    CATCHER.run()
