@@ -1,5 +1,6 @@
 import json
 import yaml
+import time
 
 from tweepy.streaming import StreamListener
 from tweepy import Stream
@@ -7,21 +8,20 @@ from tweepy import Stream
 
 class Client(object):
 
-    def __init__(self, auth, db_client, topic):
+    def __init__(self, auth, db_client):
 
         self.auth = auth
         self.db_client = db_client
-        self.topic = topic
 
         with open("config.yml", 'r') as config_file:
             config = yaml.load(config_file)
 
         # Get query parameters
         self.languages = config['languages']
-        self.keywords = config['topics'][topic]
+        self.keywords = config['keywords']
 
     def run(self):
-        listener = StdOutListener(self.db_client, self.topic)
+        listener = StdOutListener(self.db_client)
 
         stream = Stream(self.auth, listener)
         stream.filter(track=self.keywords, languages=self.languages)
@@ -31,16 +31,17 @@ class StdOutListener(StreamListener):
     """ A listener handles tweets that are received from the stream.
     This is a basic listener that just prints received tweets to stdout.
     """
-    def __init__(self, db_client, topic):
+    def __init__(self, db_client):
         self.db_client = db_client
-        self.topic = topic
 
     def on_data(self, data):
 
         t = json.loads(data)
+        print('---')
+        print(t['text'])
 
         tweet = [{
-            "measurement": self.topic,
+            "measurement": "tweets",
             "tags": {
                 'username': t['user']['screen_name'],
             },

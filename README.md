@@ -1,9 +1,14 @@
 # tweet-catcher
-A python utility for saving tweets in a time stamp database.
+A python utility for saving tweets for a certain topic using Influxdb.
 
+## Instalation
 
+TODO
+
+## Usage
+
+1. Create a config.yml file in your project directory
 Example config:
-
 ```
 database:
   host: 'localhost'
@@ -24,20 +29,24 @@ languages:
   - en
 
 
-topics:
-  bitcoin:
-    - 'btc'
-    - '$btc'
-    - '#btc'
-    - 'bitcoin'
-    - '$bitcoin'
-    - '#bitcoin'
-  ethereum:
-    - 'eth'
-    - '$eth'
-    - '#eth'
-    - 'ethereum'
-    - '$ethereum'
-    - '#ethereum'
+keywords:
+  - 'btc'
+  - 'bitcoin'
+  - '#btc'
+  - '#bitcoin'
+  - 'eth'
+  - 'ethereum'
+  - '#eth'
+  - '#ethereum'
+  - 'xrp'
+  - 'ripple'
+  - '#xrp'
+  - '#ripple'
+  - 'ltc'
+  - 'litecoin'
+  - '#ltc'
+  - '#litecoin'
 ```
+
+2. Run `catcher.py`
 

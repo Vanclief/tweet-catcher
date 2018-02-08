@@ -1,4 +1,3 @@
-from multiprocessing.dummy import Pool as ThreadPool
 import yaml
 from influxdb import InfluxDBClient
 from tweetcatcher.client import Client
@@ -11,9 +10,8 @@ class Catcher(object):
         with open("config.yml", 'r') as config_file:
             config = yaml.load(config_file)
 
-        self.topics = config['topics']
-        self.twitter_auth = self._create_twitter_auth(config)
         self.db_client = self._create_db_client(config)
+        self.twitter_auth = self._create_twitter_auth(config)
 
     def _create_db_client(self, config):
         """ Init a new InfluxDB client """
@@ -39,16 +37,10 @@ class Catcher(object):
 
         return auth
 
-    def _catch_tweets(self, topic):
-        client = Client(self.twitter_auth, self.db_client, topic)
-        client.run()
-
     def run(self):
-        """ Create a Pool and start Catching tweets"""
-        pool = ThreadPool(len(self.topics))
-        pool.map(self._catch_tweets, self.topics)
-        pool.close()
-        pool.join()
+        """ Start Catching tweets"""
+        client = Client(self.twitter_auth, self.db_client)
+        client.run()
 
 
 if __name__ == '__main__':
