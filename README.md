@@ -21,7 +21,7 @@ _COOMING SOON_
 
 Clone the repo
 ```
-git clone https://github.com/Vanclief/kraken-python.git
+git clone https://github.com/Vanclief/tweet-catcher.git
 ```
 
 Run setup
