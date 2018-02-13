@@ -3,6 +3,13 @@ Tweet Catcher allows you to define a set of keywords, and automatically start a
 Twitter stream and save tweets that match any of the keywords in a time series
 database.
 
+
+## TODO
+
+- [ ] CLI
+- [ ] Data cleaning utility
+
+
 ## Requirements
 
 * Python 3.3+
@@ -24,15 +31,16 @@ Clone the repo
 git clone https://github.com/Vanclief/tweet-catcher.git
 ```
 
+Run setup
+```
+python setup.py install
+```
+
 Install requirements
 ```
 pip install -r requirements.txt
 ```
 
-Run setup
-```
-python setup.py install
-```
 
 ## Usage
 
