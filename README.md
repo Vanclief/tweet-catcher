@@ -24,6 +24,11 @@ Clone the repo
 git clone https://github.com/Vanclief/tweet-catcher.git
 ```
 
+Install requirements
+```
+pip install -r requirements.txt
+```
+
 Run setup
 ```
 python setup.py install
