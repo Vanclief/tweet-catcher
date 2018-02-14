@@ -46,7 +46,7 @@ class StdOutListener(StreamListener):
                 "measurement": "tweets",
                 "tags": {
                     'username': t['user']['screen_name'],
-                },
+                    },
                 "fields": {
                     'id': t['id_str'],
                     'followers_count': t['user']['followers_count'],
@@ -54,7 +54,7 @@ class StdOutListener(StreamListener):
                     'hashtags': str(t['entities']['hashtags']),
                     'created_at': t['created_at'],
                     'language': t['lang']
-                }
+                    }
                 }]
 
             self.db_client.write_points(tweet)
