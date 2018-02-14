@@ -37,25 +37,27 @@ class StdOutListener(StreamListener):
     def on_data(self, data):
 
         t = json.loads(data)
-        print('---')
-        print(t['text'])
 
-        tweet = [{
-            "measurement": "tweets",
-            "tags": {
-                'username': t['user']['screen_name'],
-            },
-            "fields": {
-                'id': t['id_str'],
-                'followers_count': t['user']['followers_count'],
-                'text': t['text'],
-                'hashtags': str(t['entities']['hashtags']),
-                'created_at': t['created_at'],
-                'language': t['lang']
-            }
-            }]
+        if ('text' in t):
+            print('---')
+            print(t['text'])
 
-        self.db_client.write_points(tweet)
+            tweet = [{
+                "measurement": "tweets",
+                "tags": {
+                    'username': t['user']['screen_name'],
+                },
+                "fields": {
+                    'id': t['id_str'],
+                    'followers_count': t['user']['followers_count'],
+                    'text': t['text'],
+                    'hashtags': str(t['entities']['hashtags']),
+                    'created_at': t['created_at'],
+                    'language': t['lang']
+                }
+                }]
+
+            self.db_client.write_points(tweet)
 
         return True
 
