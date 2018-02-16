@@ -39,11 +39,16 @@ class Catcher(object):
 
     def run(self):
         """ Start Catching tweets"""
+        print("Creating new Twitter client")
         client = Client(self.twitter_auth, self.db_client)
-        client.run()
+        try:
+            client.run()
+        except:
+            self.run()
 
 
 if __name__ == '__main__':
 
     CATCHER = Catcher()
     CATCHER.run()
+

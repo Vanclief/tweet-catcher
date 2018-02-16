@@ -44,11 +44,9 @@ class StdOutListener(StreamListener):
 
             tweet = [{
                 "measurement": "tweets",
-                "tags": {
-                    'username': t['user']['screen_name'],
-                    },
                 "fields": {
                     'id': t['id_str'],
+                    'username': t['user']['screen_name'],
                     'followers_count': t['user']['followers_count'],
                     'text': t['text'],
                     'hashtags': str(t['entities']['hashtags']),
